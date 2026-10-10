@@ -26,7 +26,7 @@ The existing Python prototype holds its background fixed until B is pressed, so 
 
 ## Current implementation limits
 
-- The interactive preview currently contains a toy-car model; human pose presets have not been implemented in it.
+- The web app now includes human pose presets and independent arm controls, plus an opt-in webcam silhouette mode. Presets are simulations; webcam mode compares live frames against a fixed empty background and does not classify gestures.
 - The supplied camera-to-LED protocol and Arduino sketch are fixed to 16 × 16.
 - The 8 × 8 preview setting changes the simulation only; adapting physical hardware also requires matching Python/Arduino dimensions, packed-frame length, mapping and power limits.
 - A 32 × 32 preview does not imply that the provided Uno R3 firmware or power design supports a 32 × 32 physical panel.

@@ -2,18 +2,44 @@
 
 A student project exploring how a moving object or human silhouette can be represented by a grid of lights. The repository contains a playable software simulation, a 16 × 16 camera-to-Arduino prototype, circuit diagrams, and a cheaper checkpoint experiment retained for comparison.
 
-## Play the preview
+## Play the web app
 
-Download or clone the repository and open **[index.html](index.html)** in a modern browser. No installation, camera access, Arduino or internet connection is required for the preview. GitHub's file viewer displays HTML source; open the downloaded file in your browser to play it.
+The repository root is a Vercel-ready website called **Light / Motion**. It runs entirely in the browser, with no API keys, accounts, server functions or third-party runtime packages.
 
-Drag or tap to move the toy car, use the arrow buttons, or select **Play a movement**. You can:
+- **Human:** four pose presets, independent arm angles, drag/tap and keyboard movement.
+- **Toy car:** move and rotate a car anywhere within the stage.
+- **Webcam:** opt-in camera input with a three-second empty-room capture, fixed-background silhouette extraction and adjustable difference threshold. Processing remains on the device; no video or audio is uploaded.
+- Compare **8 × 8, 16 × 16 and 32 × 32** grids, a full silhouette or a single centre pixel, fading trails and display brightness. Save the virtual LED image as a PNG.
+- An eight-second movement demo stops automatically. Manual movement or pose changes stop the demo.
 
-- Compare 8 × 8, 16 × 16 and 32 × 32 LED grids.
-- Switch between a silhouette and a position dot.
-- Rotate the car and add a fading light trail.
-- Compare whole-surface camera tracking with six discrete checkpoint sensors.
+Human and toy-car modes are software simulations. Webcam mode performs real image processing, but does not recognise gestures or drive an Arduino. Holding still does not deliberately erase the silhouette; shadows and lighting changes can produce false detections.
 
-The preview models ideal detection from a simulated object. It is not a real webcam tracker or a test of physical electronics. A still object remains visible. Its editable fragment is in [preview/](preview/); the standalone page includes the rendering styles and runtime needed outside the original chat.
+### Deploy on Vercel
+
+Import **[SpaceX-Coding/physics](https://github.com/SpaceX-Coding/physics)** in Vercel, select branch **main**, and use the repository root (leave Root Directory at its default).
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | Other |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Environment variables | None |
+
+The included [vercel.json](vercel.json) sets the framework, build command and output directory. Click **Deploy**. This prepares the project for Vercel; pushing source alone is not proof of a deployment. See [Vercel's configuration documentation](https://vercel.com/docs/project-configuration/vercel-json).
+
+### Run locally
+
+Install Node.js 22 or newer, then run from the repository root:
+
+```bash
+npm run dev
+```
+
+Open **http://127.0.0.1:4173**. There are no packages to install. Do not double-click `index.html`: this version uses browser ES modules and should be served over HTTP/HTTPS. For a production build, run `npm run build`; `npm start` serves the built `dist/` folder.
+
+For webcam mode: click **Webcam → Start camera**, allow browser camera access, step out of the frame, then click **Capture empty room · 3s**. Re-enter the square crop after capture. Keep the camera and lighting steady. A contrasting background works best. Capture a new background after moving the camera. The camera stops when you change subjects, reset, hide or leave the page. A denied permission or missing camera leaves the simulation available. Camera access requires HTTPS or localhost; see [MDN's camera API reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia).
+
+The earlier inline toy-car/checkpoint experiment remains as editable source in [preview/](preview/); the new website focuses on whole-scene silhouette tracking.
 
 ## Current design direction
 
@@ -55,20 +81,15 @@ Press **B**, step out for background capture, then step into view. Press **Q** t
 
 ## Checks
 
-The preview logic test uses Node.js built-ins and a small DOM model, without third-party packages:
-
 ```bash
-node tests/preview.test.cjs
-```
-
-The serial encoding tests use Python's standard library:
-
-```bash
+npm test
+npm run build
 python camera-light-mirror/test_protocol.py
-python -m py_compile camera-light-mirror/silhouette.py camera-light-mirror/protocol.py
 ```
 
-Checks cover resolution, movement, rotation, stationary visibility, trails, checkpoint gaps, finite demo playback, state persistence, pixel encoding and CRC checks. These are not browser-layout, camera, Arduino compilation or hardware tests. Physical assembly, actual current, LED mapping and environmental performance require verification on the purchased components.
+The new engine tests cover human poses at all three resolutions, car movement/rotation, stationary visibility, centre-pixel output, trail decay, synthetic camera masks, isolated noise, empty frames and camera cleanup (including late permission grants). The earlier preview harness is retained. Tests use Node.js built-ins only.
+
+Browser checks exercise pose and grid changes, movement, display modes, reset and responsive layouts. Camera segmentation is tested with synthetic frames; actual webcam image quality and physical hardware require testing on your own equipment. The Arduino sketch has not been compiled or verified on hardware in this environment.
 
 ## Reference and attribution
 

@@ -1,0 +1,14 @@
+{
+  "name": "light-motion-lab",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive light mirror with human poses, toy cars and local webcam silhouettes",
+  "scripts": {
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/engine.test.mjs && node tests/preview.test.cjs"
+  },
+  "engines": { "node": ">=22" }
+}
