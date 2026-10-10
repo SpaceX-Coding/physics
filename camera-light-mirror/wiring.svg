@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+<rect width="1600" height="1100" fill="#f8fafc"/>
+<text x="50" y="70" font-family="Arial,sans-serif" font-size="40" fill="#172638">MINI LIGHT MIRROR</text>
+<text x="50" y="110" font-family="Arial,sans-serif" font-size="24" fill="#172638">16 × 16 WS2812B RGB panel • Arduino UNO R3 • brightness capped at 32 / 255</text>
+<rect x="50" y="155" width="240" height="120" fill="#ffffff" stroke="#8b9bad" stroke-width="2"/>
+<text x="80" y="205" font-family="Arial,sans-serif" font-size="28" fill="#172638">USB webcam</text>
+<text x="80" y="243" font-family="Arial,sans-serif" font-size="21" fill="#172638">or laptop camera</text>
+<rect x="390" y="155" width="290" height="120" fill="#ffffff" stroke="#8b9bad" stroke-width="2"/>
+<text x="425" y="205" font-family="Arial,sans-serif" font-size="28" fill="#172638">Laptop</text>
+<text x="425" y="245" font-family="Arial,sans-serif" font-size="23" fill="#172638">Python + OpenCV</text>
+<polyline points="290,211 390,211" fill="none" stroke="#244e70" stroke-width="4"/>
+<text x="315" y="193" font-family="Arial,sans-serif" font-size="20" fill="#172638">USB</text>
+<rect x="800" y="145" width="260" height="170" fill="#ffffff" stroke="#8b9bad" stroke-width="2"/>
+<text x="825" y="190" font-family="Arial,sans-serif" font-size="25" fill="#172638">Arduino UNO R3</text>
+<text x="825" y="228" font-family="Arial,sans-serif" font-size="20" fill="#172638">USB powers board</text>
+<text x="995" y="265" font-family="Arial,sans-serif" font-size="23" fill="#087f70">D6</text>
+<text x="982" y="303" font-family="Arial,sans-serif" font-size="23" fill="#244e70">GND</text>
+<polyline points="680,211 800,211" fill="none" stroke="#244e70" stroke-width="4"/>
+<text x="700" y="190" font-family="Arial,sans-serif" font-size="20" fill="#172638">USB</text>
+<text x="610" y="368" font-family="Arial,sans-serif" font-size="23" fill="#172638">UNO 5V / VIN / barrel jack: leave unused.</text>
+<rect x="1190" y="500" width="330" height="375" fill="#ffffff" stroke="#8b9bad" stroke-width="2"/>
+<text x="1220" y="595" font-family="Arial,sans-serif" font-size="25" fill="#172638">16 × 16 LED panel</text>
+<text x="1220" y="634" font-family="Arial,sans-serif" font-size="20" fill="#172638">256 addressable pixels</text>
+<circle cx="1232" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1256" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1280" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1304" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1328" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1352" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1376" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1400" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1424" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1448" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1472" cy="675" r="4" fill="#eaa653"/>
+<circle cx="1232" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1256" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1280" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1304" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1328" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1352" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1376" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1400" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1424" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1448" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1472" cy="699" r="4" fill="#eaa653"/>
+<circle cx="1232" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1256" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1280" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1304" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1328" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1352" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1376" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1400" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1424" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1448" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1472" cy="723" r="4" fill="#eaa653"/>
+<circle cx="1232" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1256" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1280" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1304" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1328" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1352" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1376" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1400" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1424" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1448" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1472" cy="747" r="4" fill="#eaa653"/>
+<circle cx="1232" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1256" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1280" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1304" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1328" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1352" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1376" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1400" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1424" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1448" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1472" cy="771" r="4" fill="#eaa653"/>
+<circle cx="1232" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1256" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1280" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1304" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1328" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1352" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1376" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1400" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1424" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1448" cy="795" r="4" fill="#eaa653"/>
+<circle cx="1472" cy="795" r="4" fill="#eaa653"/>
+<text x="1205" y="544" font-family="Arial,sans-serif" font-size="23" fill="#c73938">+5V</text>
+<text x="1205" y="853" font-family="Arial,sans-serif" font-size="23" fill="#244e70">GND</text>
+<text x="1404" y="534" font-family="Arial,sans-serif" font-size="22" fill="#087f70">DIN</text>
+<circle cx="1190" cy="545" r="6" fill="#c73938"/>
+<circle cx="1190" cy="850" r="6" fill="#244e70"/>
+<circle cx="1390" cy="500" r="6" fill="#087f70"/>
+<polyline points="1520,835 1555,835" fill="none" stroke="#8b9bad" stroke-width="4"/>
+<text x="1250" y="930" font-family="Arial,sans-serif" font-size="21" fill="#172638">DOUT: no connection</text>
+<polyline points="1060,255 1390,255 1390,350" fill="none" stroke="#087f70" stroke-width="4"/>
+<rect x="1376" y="350" width="28" height="74" fill="#ffffff" stroke="#087f70" stroke-width="2"/>
+<polyline points="1390,424 1390,500" fill="none" stroke="#087f70" stroke-width="4"/>
+<text x="1128" y="383" font-family="Arial,sans-serif" font-size="23" fill="#087f70">R1: 330 Ω</text>
+<text x="1128" y="416" font-family="Arial,sans-serif" font-size="20" fill="#087f70">Near panel DIN</text>
+<circle cx="1060" cy="255" r="6" fill="#087f70"/>
+<rect x="50" y="500" width="265" height="195" fill="#ffffff" stroke="#8b9bad" stroke-width="2"/>
+<text x="72" y="545" font-family="Arial,sans-serif" font-size="23" fill="#172638">ENCLOSED ADAPTER</text>
+<text x="72" y="590" font-family="Arial,sans-serif" font-size="29" fill="#172638">5 V DC • 5 A</text>
+<text x="72" y="638" font-family="Arial,sans-serif" font-size="20" fill="#172638">Factory-built supply</text>
+<text x="72" y="670" font-family="Arial,sans-serif" font-size="20" fill="#172638">Only DC side shown</text>
+<circle cx="315" cy="545" r="6" fill="#c73938"/>
+<circle cx="315" cy="660" r="6" fill="#244e70"/>
+<text x="332" y="530" font-family="Arial,sans-serif" font-size="25" fill="#c73938">+</text>
+<text x="332" y="693" font-family="Arial,sans-serif" font-size="25" fill="#244e70">−</text>
+<polyline points="315,545 440,545" fill="none" stroke="#c73938" stroke-width="4"/>
+<rect x="440" y="530" width="82" height="30" fill="#ffffff" stroke="#c73938" stroke-width="2"/>
+<text x="422" y="491" font-family="Arial,sans-serif" font-size="23" fill="#c73938">F1: 3 A fuse</text>
+<polyline points="522,545 620,545" fill="none" stroke="#c73938" stroke-width="4"/>
+<circle cx="620" cy="545" r="5" fill="#c73938"/>
+<circle cx="700" cy="545" r="5" fill="#c73938"/>
+<polyline points="620,545 688,510" fill="none" stroke="#c73938" stroke-width="4"/>
+<polyline points="700,545 1190,545" fill="none" stroke="#c73938" stroke-width="4"/>
+<text x="583" y="433" font-family="Arial,sans-serif" font-size="23" fill="#c73938">S1: DC switch</text>
+<text x="583" y="463" font-family="Arial,sans-serif" font-size="20" fill="#172638">Rated ≥ 5 A</text>
+<text x="878" y="528" font-family="Arial,sans-serif" font-size="23" fill="#c73938">LED +5V rail</text>
+<polyline points="315,660 375,660 375,980 1190,980 1190,850" fill="none" stroke="#244e70" stroke-width="4"/>
+<polyline points="1060,293 1100,293 1100,980" fill="none" stroke="#244e70" stroke-width="4"/>
+<circle cx="1060" cy="293" r="6" fill="#244e70"/>
+<circle cx="1100" cy="980" r="6" fill="#244e70"/>
+<text x="423" y="1014" font-family="Arial,sans-serif" font-size="23" fill="#244e70">COMMON GROUND: adapter −, panel GND, Arduino GND</text>
+<polyline points="825,545 825,706" fill="none" stroke="#c73938" stroke-width="4"/>
+<circle cx="825" cy="545" r="6" fill="#c73938"/>
+<polyline points="790,706 860,706" fill="none" stroke="#c73938" stroke-width="5"/>
+<polyline points="790,731 860,731" fill="none" stroke="#244e70" stroke-width="5"/>
+<polyline points="825,731 825,980" fill="none" stroke="#244e70" stroke-width="4"/>
+<circle cx="825" cy="980" r="6" fill="#244e70"/>
+<text x="774" y="688" font-family="Arial,sans-serif" font-size="25" fill="#c73938">+</text>
+<text x="865" y="721" font-family="Arial,sans-serif" font-size="23" fill="#172638">C1: 1000 µF, ≥ 10 V</text>
+<text x="865" y="757" font-family="Arial,sans-serif" font-size="19" fill="#244e70">Negative stripe → GND</text>
+<text x="50" y="782" font-family="Arial,sans-serif" font-size="22" fill="#172638">POWER WIRING</text>
+<text x="50" y="822" font-family="Arial,sans-serif" font-size="21" fill="#172638">Short 18 AWG copper leads.</text>
+<text x="50" y="858" font-family="Arial,sans-serif" font-size="21" fill="#172638">Rated terminals; no breadboard</text>
+<text x="50" y="892" font-family="Arial,sans-serif" font-size="21" fill="#172638">or Dupont jumpers for LED power.</text>
+<text x="50" y="1066" font-family="Arial,sans-serif" font-size="22" fill="#172638">Join wires only at dots. Crossing without a dot is not a connection. Connect with all power unplugged.</text>
+</svg>

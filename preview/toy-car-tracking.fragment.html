@@ -1,0 +1,353 @@
+<div id="toy-car-tracking">
+  <style>
+    #toy-car-tracking { color: var(--foreground); width: 100%; }
+    #toy-car-tracking .tct-heading { padding-right: 92px; margin-bottom: 18px; }
+    #toy-car-tracking .tct-heading h3 { margin: 0 0 4px; }
+    #toy-car-tracking .tct-panels { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; margin: 18px 0 12px; }
+    #toy-car-tracking .tct-panel { min-width: 0; }
+    #toy-car-tracking .tct-panel-title { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    #toy-car-tracking .tct-field { display: block; width: 100%; aspect-ratio: 1; overflow: visible; }
+    #toy-car-tracking #tct-input { touch-action: none; cursor: grab; }
+    #toy-car-tracking #tct-input.tct-dragging { cursor: grabbing; }
+    #toy-car-tracking .tct-frame { fill: var(--muted); fill-opacity: .22; stroke: var(--border); stroke-width: 1; }
+    #toy-car-tracking .tct-gridline { stroke: var(--border); stroke-width: 1; opacity: .6; }
+    #toy-car-tracking .tct-car { fill: var(--viz-series-1); }
+    #toy-car-tracking .tct-window { fill: var(--background); opacity: .86; }
+    #toy-car-tracking .tct-wheel { fill: var(--foreground); }
+    #toy-car-tracking .tct-dot-off { fill: var(--foreground); opacity: .10; }
+    #toy-car-tracking .tct-dot-on { fill: var(--viz-series-1); }
+    #toy-car-tracking .tct-zone { fill: var(--viz-series-1); fill-opacity: .10; stroke: var(--border); stroke-width: 1; }
+    #toy-car-tracking .tct-zone.tct-hit { fill-opacity: .35; }
+    #toy-car-tracking .tct-centre { stroke: var(--foreground); stroke-width: 1.5; fill: none; }
+    #toy-car-tracking .tct-detail { margin: 6px 0 16px; min-height: 1.5em; }
+    #toy-car-tracking .tct-control-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px 20px; margin: 14px 0; }
+    #toy-car-tracking .tct-label { display: flex; justify-content: space-between; gap: 8px; }
+    #toy-car-tracking .tct-direction { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    #toy-car-tracking .tct-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    @media (max-width: 520px) {
+      #toy-car-tracking .tct-panels { grid-template-columns: minmax(0,1fr); gap: 16px; }
+      #toy-car-tracking .tct-control-grid { grid-template-columns: minmax(0,1fr); }
+    }
+  </style>
+
+  <div class="tct-heading">
+    <h3>Toy car → light</h3>
+    <span class="text-small text-muted">Interactive simulation · no camera or electronics required</span>
+  </div>
+
+  <div class="viz-controls">
+    <label class="form-label" for="tct-mode">Tracking
+      <select class="form-select" id="tct-mode">
+        <option value="camera">Camera — whole surface</option>
+        <option value="checkpoints">Six checkpoints — comparison</option>
+      </select>
+    </label>
+    <label class="form-label" for="tct-resolution">LED grid
+      <select class="form-select" id="tct-resolution">
+        <option value="8">8 × 8 · 64 LEDs</option>
+        <option value="16">16 × 16 · 256 LEDs</option>
+        <option value="32">32 × 32 · 1,024 LEDs</option>
+      </select>
+    </label>
+    <label class="form-label" for="tct-display">Show
+      <select class="form-select" id="tct-display">
+        <option value="shape">Car silhouette</option>
+        <option value="position">Position dot</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="tct-panels">
+    <div class="tct-panel">
+      <div class="tct-panel-title"><span>Simulated camera view</span><span class="text-small text-muted">Drag or tap to move</span></div>
+      <svg id="tct-input" class="tct-field" role="img" aria-label="Top-down toy car. Drag or tap the surface to move it. Equivalent arrow buttons are below.">
+        <title>Toy car on the tracking surface</title>
+        <desc>The car position is the simulated input. Shaded windows appear only in checkpoint mode.</desc>
+      </svg>
+    </div>
+    <div class="tct-panel">
+      <div class="tct-panel-title"><span id="tct-output-title">LED output</span><span id="tct-led-count" class="text-small text-muted tabular-nums"></span></div>
+      <svg id="tct-output" class="tct-field" role="img" aria-label="LED grid showing the car silhouette or its position">
+        <title>Simulated LED display</title>
+        <desc>Individual lights update as the car moves. Higher resolution gives a finer outline.</desc>
+      </svg>
+    </div>
+  </div>
+
+  <div id="tct-detail" class="tct-detail text-small" aria-live="polite"></div>
+
+  <div class="tct-control-grid">
+    <label class="form-label" for="tct-angle"><span class="tct-label"><span>Car rotation</span><output id="tct-angle-value" class="tabular-nums">0°</output></span>
+      <input class="form-range" id="tct-angle" type="range" min="-180" max="180" step="5" value="0">
+    </label>
+    <div class="tct-direction" role="group" aria-label="Move the car">
+      <span class="text-small">Move</span>
+      <button type="button" class="btn" id="tct-left" aria-label="Move car left">←</button>
+      <button type="button" class="btn" id="tct-up" aria-label="Move car up">↑</button>
+      <button type="button" class="btn" id="tct-down" aria-label="Move car down">↓</button>
+      <button type="button" class="btn" id="tct-right" aria-label="Move car right">→</button>
+    </div>
+  </div>
+  <div class="tct-footer">
+    <label class="form-check form-switch"><input id="tct-trail" class="form-check-input" type="checkbox"><span class="form-check-label">Fading light trail</span></label>
+    <button type="button" id="tct-play" class="btn btn-primary">Play a movement</button>
+  </div>
+  <div id="tct-announcement" class="sr-only" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    const root = document.getElementById('toy-car-tracking');
+    const byId = id => root.querySelector('#' + id);
+    const ui = {
+      mode: byId('tct-mode'), resolution: byId('tct-resolution'), display: byId('tct-display'),
+      angle: byId('tct-angle'), angleValue: byId('tct-angle-value'), trail: byId('tct-trail'),
+      play: byId('tct-play'), input: byId('tct-input'), output: byId('tct-output'),
+      detail: byId('tct-detail'), count: byId('tct-led-count'), title: byId('tct-output-title'),
+      announcement: byId('tct-announcement')
+    };
+    const NS = 'http://www.w3.org/2000/svg';
+    const clamp = (v, low, high) => Math.max(low, Math.min(high, v));
+    const state = { mode: 'camera', resolution: 8, display: 'shape', x: .43, y: .51, angle: 0, trail: false };
+    const carPolygon = [[-.135,-.062],[-.108,-.077],[.085,-.077],[.137,-.055],[.15,-.032],
+                        [.15,.032],[.137,.055],[.085,.077],[-.108,.077],[-.135,.062]];
+    const wheelRects = [[-.092,-.087,.039,.023],[.069,-.087,.039,.023],[-.092,.064,.039,.023],[.069,.064,.039,.023]];
+    let inputWidth = 1, outputWidth = 1, carGroup, checkpointZones = [], lightNodes = [];
+    let levels = [], sampled = [], lastLit = [], frameRequest = 0, lastSample = -Infinity;
+    let demo = null, dragging = false, lastDetail = '', disposed = false, trackingDirty = true;
+    const sampleInterval = 40, fadeDuration = 600;
+
+    function svg(tag, attrs = {}) {
+      const el = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([name,value]) => el.setAttribute(name, String(value)));
+      return el;
+    }
+    function validNumber(value, fallback, low, high) {
+      return typeof value === 'number' && Number.isFinite(value) ? clamp(value,low,high) : fallback;
+    }
+    function restore(snapshot) {
+      if (!snapshot) return;
+      const m = snapshot.modelContent || {}, p = snapshot.privateContent || {};
+      state.mode = ['camera','checkpoints'].includes(m.tracking) ? m.tracking : state.mode;
+      state.resolution = [8,16,32].includes(m.resolution) ? m.resolution : state.resolution;
+      state.display = ['shape','position'].includes(m.display) ? m.display : state.display;
+      if (typeof m.trail === 'boolean') state.trail = m.trail;
+      state.x = validNumber(p.x,state.x,.18,.82);
+      state.y = validNumber(p.y,state.y,.18,.82);
+      state.angle = validNumber(p.angle,state.angle,-180,180);
+    }
+    function save() {
+      const snapshot = {
+        modelContent: { tracking:state.mode, resolution:state.resolution, display:state.display, trail:state.trail },
+        privateContent: { x:state.x, y:state.y, angle:state.angle }
+      };
+      if (window.openai && typeof window.openai.setWidgetState === 'function') {
+        try { Promise.resolve(window.openai.setWidgetState(snapshot)).catch(() => {}); } catch (_) {}
+      }
+    }
+    function syncControls() {
+      ui.mode.value = state.mode;
+      ui.resolution.value = String(state.resolution);
+      ui.display.value = state.display;
+      ui.angle.value = String(state.angle);
+      ui.angleValue.value = Math.round(state.angle) + '°';
+      ui.trail.checked = state.trail;
+      ui.resolution.disabled = ui.display.disabled = state.mode === 'checkpoints';
+      ui.title.textContent = state.mode === 'camera' ? 'LED output' : 'Six checkpoint lights';
+    }
+    function resetHistory() {
+      const n = state.mode === 'camera' ? state.resolution ** 2 : 6;
+      levels = Array(n).fill(0); sampled = Array(n).fill(false); lastLit = Array(n).fill(-Infinity);
+      lastSample = -Infinity; trackingDirty = true;
+    }
+    function rebuildInput() {
+      ui.input.replaceChildren(svg('title'), svg('desc'));
+      ui.input.children[0].textContent = 'Top-down car position';
+      ui.input.children[1].textContent = 'Drag to move, or use the arrow buttons below. The car is simulated, not a live camera image.';
+      const w = inputWidth;
+      ui.input.setAttribute('viewBox', `0 0 ${w} ${w}`);
+      ui.input.append(svg('rect',{x:1,y:1,width:w-2,height:w-2,class:'tct-frame'}));
+      for(let i=1;i<8;i++) {
+        ui.input.append(svg('line',{x1:i*w/8,y1:1,x2:i*w/8,y2:w-1,class:'tct-gridline'}));
+        ui.input.append(svg('line',{x1:1,y1:i*w/8,x2:w-1,y2:i*w/8,class:'tct-gridline'}));
+      }
+      checkpointZones = [];
+      if(state.mode === 'checkpoints') {
+        for(let i=0;i<6;i++) {
+          const zone = svg('rect',{x:((i+1)/7-.042)*w,y:.41*w,width:.084*w,height:.18*w,class:'tct-zone'});
+          ui.input.append(zone); checkpointZones.push(zone);
+        }
+      }
+      carGroup = svg('g',{'aria-hidden':'true'});
+      for(const [x,y,rw,rh] of wheelRects) carGroup.append(svg('rect',{x:x*w,y:y*w,width:rw*w,height:rh*w,rx:w*.006,class:'tct-wheel'}));
+      carGroup.append(svg('polygon',{points:carPolygon.map(([x,y]) => `${x*w},${y*w}`).join(' '),class:'tct-car'}));
+      carGroup.append(svg('polygon',{points:[[-.055,-.052],[.056,-.052],[.073,.052],[-.055,.052]].map(([x,y])=>`${x*w},${y*w}`).join(' '),class:'tct-window'}));
+      carGroup.append(svg('rect',{x:-.032*w,y:-.051*w,width:.052*w,height:.102*w,class:'tct-car'}));
+      carGroup.append(svg('line',{x1:.104*w,y1:-.035*w,x2:.104*w,y2:.035*w,class:'tct-centre'}));
+      ui.input.append(carGroup);
+      renderCar();
+    }
+    function renderCar() {
+      trackingDirty = true;
+      if(carGroup) carGroup.setAttribute('transform',`translate(${state.x*inputWidth} ${state.y*inputWidth}) rotate(${state.angle})`);
+      root.dataset.carX = state.x.toFixed(3);
+      root.dataset.carY = state.y.toFixed(3);
+    }
+    function rebuildOutput() {
+      const w = outputWidth;
+      ui.output.replaceChildren(svg('title'));
+      ui.output.children[0].textContent = 'Simulated light output';
+      ui.output.setAttribute('viewBox',`0 0 ${w} ${w}`);
+      ui.output.append(svg('rect',{x:1,y:1,width:w-2,height:w-2,class:'tct-frame'}));
+      lightNodes = [];
+      const n = state.mode === 'camera' ? state.resolution : 6;
+      const rows = state.mode === 'camera' ? n : 1;
+      for(let y=0;y<rows;y++) for(let x=0;x<n;x++) {
+        const cx = state.mode === 'camera' ? (x+.5)*w/n : (x+1)*w/7;
+        const cy = state.mode === 'camera' ? (y+.5)*w/n : w/2;
+        const r = state.mode === 'camera' ? w/n*.31 : w/25;
+        ui.output.append(svg('circle',{cx,cy,r,class:'tct-dot-off'}));
+        const on = svg('circle',{cx,cy,r,class:'tct-dot-on',opacity:0});
+        ui.output.append(on); lightNodes.push(on);
+      }
+      renderLights();
+    }
+    function insideCar(wx,wy) {
+      const a = state.angle * Math.PI / 180, dx = wx-state.x, dy = wy-state.y;
+      const x = dx*Math.cos(a)+dy*Math.sin(a), y = -dx*Math.sin(a)+dy*Math.cos(a);
+      for(const [rx,ry,rw,rh] of wheelRects) if(x>=rx && x<=rx+rw && y>=ry && y<=ry+rh) return true;
+      let inside = false;
+      for(let i=0,j=carPolygon.length-1;i<carPolygon.length;j=i++) {
+        const [xi,yi]=carPolygon[i], [xj,yj]=carPolygon[j];
+        if(((yi>y)!==(yj>y)) && x<(xj-xi)*(y-yi)/(yj-yi)+xi) inside=!inside;
+      }
+      return inside;
+    }
+    function sample(now) {
+      const previous = sampled.slice();
+      sampled.fill(false);
+      if(state.mode === 'checkpoints') {
+        for(let i=0;i<6;i++) sampled[i] = Math.abs(state.x-(i+1)/7)<=.042 && Math.abs(state.y-.5)<=.09;
+      } else if(state.display === 'position') {
+        sampled[Math.min(state.resolution-1,Math.floor(state.y*state.resolution))*state.resolution+
+                Math.min(state.resolution-1,Math.floor(state.x*state.resolution))] = true;
+      } else {
+        const n=state.resolution;
+        for(let y=0;y<n;y++) for(let x=0;x<n;x++) {
+          let hits=0;
+          for(let sy=0;sy<4;sy++) for(let sx=0;sx<4;sx++) {
+            if(insideCar((x+(sx+.5)/4)/n,(y+(sy+.5)/4)/n)) hits++;
+          }
+          sampled[y*n+x] = hits >= 3;
+        }
+      }
+      for(let i=0;i<sampled.length;i++) if(sampled[i] || previous[i]) lastLit[i]=now;
+      lastSample=now;trackingDirty=false;
+    }
+    function renderLights() {
+      let lit=0;
+      lightNodes.forEach((node,i)=>{
+        const v=levels[i]||0;
+        node.setAttribute('opacity',v.toFixed(3));
+        if(v>.02)lit++;
+      });
+      ui.count.textContent = `${lit} / ${lightNodes.length} lit`;
+      root.dataset.litCount=String(lit);
+      root.dataset.activeCount=String(sampled.filter(Boolean).length);
+      checkpointZones.forEach((zone,i)=>zone.classList.toggle('tct-hit',!!sampled[i]));
+    }
+    function detail() {
+      let message;
+      if(state.mode==='checkpoints') {
+        message = sampled.some(Boolean) ? 'Checkpoint model: detected inside a shaded window.' : 'Checkpoint model: no detection here, even though the car is visible.';
+      } else {
+        message = state.display==='shape' ? `Ideal camera tracking · ${state.resolution} × ${state.resolution} silhouette · a still car remains visible.` : 'Ideal camera tracking · one LED marks the car’s centre.';
+      }
+      if(state.trail) message = state.mode==='checkpoints' ? 'Trail shows past detections; it cannot fill gaps in sensing.' : 'Bright LEDs show now; fading LEDs show the previous 0.6 seconds.';
+      if(message!==lastDetail) { ui.detail.textContent=message; lastDetail=message; }
+    }
+    function stopDemo() { demo=null;ui.play.textContent='Play a movement'; }
+    function animateDemo(now) {
+      if(!demo)return;
+      const progress=clamp((now-demo.start)/7000,0,1);
+      const waypoints=[[.24,.5],[.77,.5],[.77,.24],[.27,.26],[.45,.77],[.65,.55]];
+      const scaled=progress*(waypoints.length-1), i=Math.min(waypoints.length-2,Math.floor(scaled));
+      const local=progress===1 ? 1 : scaled-i, eased=local*local*(3-2*local);
+      state.x=waypoints[i][0]+(waypoints[i+1][0]-waypoints[i][0])*eased;
+      state.y=waypoints[i][1]+(waypoints[i+1][1]-waypoints[i][1])*eased;
+      renderCar();
+      if(progress>=1) { stopDemo();save();ui.announcement.textContent='Movement complete. You can drag the car.'; }
+    }
+    function tick(now) {
+      frameRequest=0;
+      if(disposed||!root.isConnected)return;
+      animateDemo(now);
+      if(trackingDirty&&now-lastSample>=sampleInterval)sample(now);
+      let fading=false;
+      for(let i=0;i<levels.length;i++) {
+        levels[i]=sampled[i]?1:(state.trail?clamp(1-(now-lastLit[i])/fadeDuration,0,1):0);
+        if(!sampled[i]&&levels[i]>0)fading=true;
+      }
+      renderLights();detail();
+      if(demo||dragging||fading||trackingDirty) requestFrame();
+    }
+    function requestFrame() { if(!frameRequest&&!disposed)frameRequest=requestAnimationFrame(tick); }
+    function changedStructure() {
+      stopDemo();resetHistory();syncControls();rebuildInput();rebuildOutput();requestFrame();save();
+    }
+    ui.mode.addEventListener('change',()=>{state.mode=ui.mode.value;changedStructure();});
+    ui.resolution.addEventListener('change',()=>{state.resolution=Number(ui.resolution.value);changedStructure();});
+    ui.display.addEventListener('change',()=>{state.display=ui.display.value;changedStructure();});
+    ui.trail.addEventListener('change',()=>{state.trail=ui.trail.checked;resetHistory();requestFrame();save();});
+    ui.angle.addEventListener('input',()=>{stopDemo();state.angle=Number(ui.angle.value);ui.angleValue.value=state.angle+'°';renderCar();lastSample=-Infinity;requestFrame();});
+    ui.angle.addEventListener('change',save);
+
+    function moveTo(x,y) {
+      stopDemo();state.x=clamp(x,.18,.82);state.y=clamp(y,.18,.82);renderCar();requestFrame();
+    }
+    function pointer(e) {
+      const rect=ui.input.getBoundingClientRect();
+      moveTo((e.clientX-rect.left)/rect.width,(e.clientY-rect.top)/rect.height);
+    }
+    ui.input.addEventListener('pointerdown',e=>{
+      if(e.button!==0)return;e.preventDefault();dragging=true;ui.input.classList.add('tct-dragging');
+      ui.input.setPointerCapture(e.pointerId);pointer(e);
+    });
+    ui.input.addEventListener('pointermove',e=>{if(dragging)pointer(e);});
+    function endDrag() {if(!dragging)return;dragging=false;ui.input.classList.remove('tct-dragging');save();requestFrame();}
+    ui.input.addEventListener('pointerup',endDrag);ui.input.addEventListener('pointercancel',endDrag);ui.input.addEventListener('lostpointercapture',endDrag);
+    const moves={left:[-.025,0],right:[.025,0],up:[0,-.025],down:[0,.025]};
+    Object.entries(moves).forEach(([name,[dx,dy]])=>byId('tct-'+name).addEventListener('click',()=>{
+      moveTo(state.x+dx,state.y+dy);lastSample=-Infinity;requestFrame();save();
+      ui.announcement.textContent=`Car moved ${name}.`;
+    }));
+    root.addEventListener('keydown',e=>{
+      if(['INPUT','SELECT'].includes(e.target.tagName))return;
+      const name={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];
+      if(name){e.preventDefault();byId('tct-'+name).click();}
+    });
+    ui.play.addEventListener('click',()=>{
+      if(demo){stopDemo();save();}else{demo={start:performance.now()};ui.play.textContent='Stop movement';}
+      requestFrame();
+    });
+    function resize() {
+      const iw=Math.max(1,ui.input.getBoundingClientRect().width), ow=Math.max(1,ui.output.getBoundingClientRect().width);
+      if(Math.abs(iw-inputWidth)>.5){inputWidth=iw;rebuildInput();}
+      if(Math.abs(ow-outputWidth)>.5){outputWidth=ow;rebuildOutput();}
+      requestFrame();
+    }
+    restore(window.openai && window.openai.widgetState);
+    syncControls();resetHistory();
+    const observer=new ResizeObserver(resize);observer.observe(ui.input);observer.observe(ui.output);
+    window.addEventListener('openai:set_globals',e=>{
+      const snapshot=e.detail&&e.detail.globals&&e.detail.globals.widgetState;
+      if(snapshot){
+        const before=JSON.stringify(state);
+        restore(snapshot);
+        if(JSON.stringify(state)!==before){stopDemo();syncControls();resetHistory();rebuildInput();rebuildOutput();requestFrame();}
+      }
+    });
+    window.addEventListener('pagehide',()=>{disposed=true;observer.disconnect();if(frameRequest)cancelAnimationFrame(frameRequest);});
+    resize();requestFrame();
+  })();
+  </script>
+</div>
