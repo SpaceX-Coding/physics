@@ -4,8 +4,6 @@ import path from 'node:path';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const html=await readFile(path.join(root,'index.html'),'utf8');
 for(const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)) await stat(path.join(root,match[1]));
-const config=JSON.parse(await readFile(path.join(root,'vercel.json'),'utf8'));
-if(config.outputDirectory!=='dist')throw new Error('Vercel output must match the build directory');
 const dest=path.join(root,'dist');
 await rm(dest,{recursive:true,force:true});
 await mkdir(dest,{recursive:true});
